@@ -4,13 +4,22 @@ export default gql`
   extend type Query {
     hello: String!
     getAllPosts: [Post!]!
+    getPostById(id: ID!): Post!
   }
 
   extend type Mutation {
-    createNewPost(newPost: NewPost): Post!
+    createNewPost(newPost: PostInput!): Post!
+    editPostById(updatedPost: PostInput, id: ID): Post!
+    deletePostById(id: ID!): PostNotification!
   }
 
-  input NewPost {
+  type PostNotification {
+    id: ID!
+    message: String!
+    success: Boolean!
+  }
+
+  input PostInput {
     title: String!
     content: String!
     featuredImage: String

@@ -1,12 +1,16 @@
 import express from "express";
 import { success, error } from "consola";
 import { PORT, IN_PROD, DB } from "./config";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./graphql";
 import mongoose from "mongoose";
 import * as AppModels from "./models";
+import { join } from "path";
+import AuthMiddleware from "./middlewares/auth";
 /* initialize the Express Application */
 const app = express();
+app.use(AuthMiddleware);
+app.use(express.static(join(__dirname, "./uploads")));
 
 const server = new ApolloServer({
   typeDefs,

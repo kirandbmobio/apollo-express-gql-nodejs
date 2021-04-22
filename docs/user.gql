@@ -1,0 +1,17 @@
+mutation REGISTER_USER {
+  registerUser(
+    newUser: {
+      username: "jdis1111111111"
+      email: "asd121111131111@gmail.com"
+      password: "1234"
+      firstName: "kdb"
+      lastName: "asdjhk"
+    }
+  ) {
+    token
+    user {
+      email
+      lastName
+    }
+  }
+}
