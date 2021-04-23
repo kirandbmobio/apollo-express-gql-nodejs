@@ -6,6 +6,7 @@ import { typeDefs, resolvers } from "./graphql";
 import mongoose from "mongoose";
 import * as AppModels from "./models";
 import { join } from "path";
+import { schemaDirectives } from "./graphql/directives";
 import AuthMiddleware from "./middlewares/auth";
 /* initialize the Express Application */
 const app = express();
@@ -15,9 +16,16 @@ app.use(express.static(join(__dirname, "./uploads")));
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  schemaDirectives,
   playground: IN_PROD,
-  context: {
-    ...AppModels,
+  context: (req) => {
+    let { isAuth, user } = req;
+    return {
+      req,
+      isAuth,
+      user,
+      ...AppModels,
+    };
   },
 });
 
