@@ -25,7 +25,7 @@ export class isAuthDirective extends SchemaDirectiveVisitor {
           },
         },
       ] = args;
-      console.log(isAuth, user);
+
       if (isAuth) {
         const result = await resolve.apply(this, args);
         return result;

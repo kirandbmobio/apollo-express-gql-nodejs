@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 
+const mongoosePaginate = require("mongoose-paginate-v2");
+
 const PostSchema = new Schema(
   {
     title: {
@@ -14,9 +16,15 @@ const PostSchema = new Schema(
       type: String,
       required: false,
     },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
   { timestamps: true }
 );
+
+PostSchema.plugin(mongoosePaginate);
 
 const Post = model("posts", PostSchema);
 

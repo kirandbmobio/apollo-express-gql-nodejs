@@ -3,11 +3,28 @@ import { hash, compare } from "bcryptjs";
 
 import { issueJwtToken, serializeUser } from "../../functions";
 
+import {
+  UserAuthenticationRules,
+  UserRegistrationRules,
+} from "../../validators";
+
 export default {
   Query: {
     userInfo: () => "This is user resolver",
+    authUserProfile: async (_, args, ctx) => {
+      try {
+        let user = ctx.req.req.user;
+        return user;
+      } catch (err) {
+        throw new ApolloError(err.message);
+      }
+    },
     authenticateUser: async (_, { username, password }, { User }) => {
       try {
+        await UserAuthenticationRules.validate(
+          { username },
+          { abortEarly: false }
+        );
         //Find user by username
         let user = await User.findOne({ username });
         if (!user) {
@@ -35,6 +52,10 @@ export default {
   Mutation: {
     registerUser: async (_, { newUser }, { User }) => {
       try {
+        await UserRegistrationRules.validate(
+          { newUser },
+          { abortEarly: false }
+        );
         let { username, email } = newUser;
         //First check if username is already taken
         let usernameExist = await User.findOne({ username });

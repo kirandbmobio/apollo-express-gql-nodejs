@@ -4,13 +4,14 @@ export default gql`
   extend type Query {
     hello: String!
     getAllPosts: [Post!]! @isAuth
-    getPostById(id: ID!): Post!
+    getPostsByPageAndLimit(page: Int, limit: Int): PostPaginator!
+    getPostById(id: ID!): Post! @isAuth
   }
 
   extend type Mutation {
-    createNewPost(newPost: PostInput!): Post!
-    editPostById(updatedPost: PostInput, id: ID): Post!
-    deletePostById(id: ID!): PostNotification!
+    createNewPost(newPost: PostInput!): Post! @isAuth
+    editPostById(updatedPost: PostInput, id: ID): Post! @isAuth
+    deletePostById(id: ID!): PostNotification! @isAuth
   }
 
   type PostNotification {
@@ -32,5 +33,23 @@ export default gql`
     featuredImage: String
     createdAt: String
     updatedAt: String
+    author: User!
+  }
+
+  type PostPaginator {
+    posts: [Post!]!
+    paginator: PostPaginateLabel
+  }
+
+  type PostPaginateLabel {
+    postCount: Int!
+    perPage: Int!
+    pageCount: Int!
+    currentPage: Int!
+    slNo: Int!
+    hasPrevPage: Boolean!
+    hasNextPage: Boolean!
+    prev: Int
+    next: Int
   }
 `;

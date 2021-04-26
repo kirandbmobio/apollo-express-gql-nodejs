@@ -10,8 +10,34 @@ mutation REGISTER_USER {
   ) {
     token
     user {
+        _id
+        username
+        email
+        lastName
+        firstName
+    }
+  }
+}
+
+query AUTHENTICATE_USER($username: String!, $password: String!) {
+	authenticateUser(username: $username, password: $password)  {
+    token
+    user {
+      _id
       email
+      username
+      firstName
       lastName
     }
+  }
+}
+
+query AUTH_USER {
+  authUserProfile{
+    _id
+    username
+    email
+    lastName
+    firstName
   }
 }
